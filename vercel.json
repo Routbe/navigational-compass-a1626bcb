@@ -1,0 +1,7 @@
+{
+  "crons": [
+    { "path": "/api/public/cron/cleanup-assets", "schedule": "17 3 * * *" },
+    { "path": "/api/public/cron/purge-altcha", "schedule": "40 * * * *" },
+    { "path": "/api/public/cron/check-dns", "schedule": "*/30 * * * *" }
+  ]
+}
