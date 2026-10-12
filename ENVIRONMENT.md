@@ -183,3 +183,6 @@ Register the webhook once with `TELEGRAM_BOT_TOKEN=... bun scripts/telegram-set-
 
 - `VITE_APP_MODE` — `public` on rout.be (all /admin pages, /api/admin and admin server functions return 404/403), `admin` on rout.dlp.li (only portal + sign-in, no social login, noindex). Unset = everything served (preview).
 - `APP_MODE` — Optional server-side override of the same value.
+
+## VITE_PUBLIC_SITE_URL
+Public site base URL (e.g. https://rout.be) used for stamp claim links created on the admin portal. Optional; defaults to https://rout.be in admin mode.

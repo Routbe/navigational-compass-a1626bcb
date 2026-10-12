@@ -180,7 +180,7 @@ export async function publicBadgesForHandle(rawHandle: string) {
        where p.username = ${handle}
          and coalesce(p.is_banned, false) = false
        order by u.sort_order, u.granted_at
-       limit 12
+       limit 48
     `) as Row[];
     return rows.map((r) => ({
       slug: String(r["slug"]),

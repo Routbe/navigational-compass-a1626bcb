@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { BadgeClaimLinks } from "@/components/admin/BadgeClaimLinks";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Plus, Save, Search, Trash2, X } from "lucide-react";
@@ -258,6 +259,8 @@ function BadgeDetail({ badge, onBack, onChanged }: { badge: Badge; onBack: () =>
         <Input value={reason} onChange={(e) => setReason(e.target.value)} maxLength={200} placeholder="Reden (optioneel, zichtbaar in de pop-up) — bv. Stamhouder sinds 2024" aria-label="Reden van toekenning" />
         <UserSearch onPick={(u) => void toggle(u.userId, true)} />
       </section>
+
+      <BadgeClaimLinks badgeId={badge.id} />
 
       <section className="space-y-2">
         <p className="text-xs uppercase tracking-wide text-muted-foreground">Houders · {holders.length}</p>

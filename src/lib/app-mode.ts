@@ -49,3 +49,42 @@ export function modeDecision(mode: AppMode, pathname: string): ModeDecision {
 export function socialLoginAllowed(mode: AppMode): boolean {
   return mode !== "admin";
 }
+
+/* ---------- Client shell mode (UI only — never a security decision) ---------- */
+
+export type ShellMode = "public" | "admin";
+export const MODE_OVERRIDE_KEY = "app:mode-override";
+const shell = (v: unknown): ShellMode | null => (v === "public" || v === "admin" ? v : null);
+
+/** Fixed when the build pins VITE_APP_MODE; overrides are then ignored and the switcher hidden. */
+export const isModeFixed = () => shell(import.meta.env["VITE_APP_MODE"]) !== null;
+
+/**
+ * Which shell the browser should show. Priority: build env → hostname (admin.*, rout.dlp.li)
+ * → ?mode= → localStorage override → "public". Call only after hydration (reads window).
+ * Server-side access rules still come from appMode() + assertAdminRole.
+ */
+export function detectShellMode(): ShellMode {
+  const fixed = shell(import.meta.env["VITE_APP_MODE"]);
+  if (fixed) return fixed;
+  if (typeof window === "undefined") return "public";
+  const host = window.location.hostname;
+  if (host.startsWith("admin.") || host === "rout.dlp.li") return "admin";
+  const param = shell(new URLSearchParams(window.location.search).get("mode"));
+  if (param) return param;
+  try {
+    const stored = shell(window.localStorage.getItem(MODE_OVERRIDE_KEY));
+    if (stored) return stored;
+  } catch {
+    /* storage blocked */
+  }
+  return "public";
+}
+
+/** Dev/preview only: never on a pinned production build. */
+export function canSwitchShellMode(): boolean {
+  if (isModeFixed() || typeof window === "undefined") return false;
+  if (import.meta.env.DEV) return true;
+  const h = window.location.hostname;
+  return h === "localhost" || h.endsWith(".lovable.app") || h.endsWith(".lovableproject.com");
+}
