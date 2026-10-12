@@ -37,7 +37,7 @@ function ClaimStampPage() {
   const valid = /^stamp_[a-z0-9]{8,32}$/.test(token);
   const { user, loading } = useAuth();
   const redeem = useServerFn(redeemStampClaim);
-  const q = useQuery({ queryKey: ["stamp-claim", token], queryFn: () => getStampClaim({ data: { token } }), enabled: valid });
+  const q = useQuery({ queryKey: ["stamp-claim", token], queryFn: () => getStampClaim({ data: { token } }), enabled: valid, retry: 1 });
   const [result, setResult] = useState<string | null>(null);
   const tried = useRef(false);
 
@@ -50,7 +50,7 @@ function ClaimStampPage() {
       .catch(() => setResult("error"));
   }, [user, q.data, redeem, token]);
 
-  const state = !valid || q.data === null ? "invalid" : (result ?? (q.data && q.data.state !== "open" ? q.data.state : null));
+  const state = q.isError ? "error" : !valid || q.data === null ? "invalid" : (result ?? (q.data && q.data.state !== "open" ? q.data.state : null));
   const handle = (user as { username?: string } | null)?.username;
 
   return (
