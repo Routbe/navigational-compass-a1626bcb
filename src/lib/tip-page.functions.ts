@@ -96,3 +96,17 @@ export const startTipPayment = createServerFn({ method: "POST" })
     const { startPspTip } = await import("./tip-page.server");
     return startPspTip({ handle: data.handle, amountCents: data.amountCents, method: data.method, origin });
   });
+
+/** Sovereign Tip Jar: the EPC payload is built on the server from the creator's saved IBAN; no PSP involved. */
+export const getTipJarQr = createServerFn({ method: "GET" })
+  .inputValidator((d: { handle: string }) => z.object({ handle: z.string().max(80) }).parse(d))
+  .handler(async ({ data }) => {
+    const { readPublicTipPage } = await import("./tip-page.server");
+    const { buildEpcPayload } = await import("./epc-qr");
+    const page = await readPublicTipPage(data.handle);
+    if (!page) return null;
+    const amountCents = Math.max(page.minCents, page.presetsCents[0] ?? 250);
+    const reference = `Steun @${page.handle}`;
+    const payload = buildEpcPayload({ beneficiary: page.accountName, iban: page.iban, amountCents, reference });
+    return payload ? { handle: page.handle, accountName: page.accountName, amountCents, payload } : null;
+  });

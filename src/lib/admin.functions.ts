@@ -161,6 +161,7 @@ export const listUsers = createServerFn({ method: "POST" })
         segment: z
           .enum(["all", "free", "verified_paid", "alias_unsynced", "suspended_or_banned"])
           .optional(),
+        memberStatus: z.enum(["active", "frozen", "shadowbanned"]).optional(),
       })
       .parse(data ?? {}),
   )

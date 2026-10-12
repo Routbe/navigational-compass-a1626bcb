@@ -26,6 +26,7 @@ export type ModeratedUser = {
   status: string;
   isSuspended: boolean;
   isBanned: boolean;
+  isShadowbanned: boolean;
   moderationReason: string | null;
   handleGrant: string | null;
   /** Gratis/alias-identiteit: rout.be/u/<alias>. */
@@ -50,7 +51,7 @@ export type ModeratedUser = {
 };
 
 const PROFILE_COLUMNS =
-  "id, display_name, username, tagline, avatar_url, blocks, tier, verified, status, is_suspended, is_banned, moderation_reason, handle_grant, alias_status, forwarding_email, created_at, is_paid, payment_method, is_early_believer, alias_sync_status, alias_sync_attempts, alias_synced_at, alias_sync_error, subdomain_alias, last_country, last_city";
+  "id, display_name, username, tagline, avatar_url, blocks, tier, verified, status, is_suspended, is_banned, is_shadowbanned, moderation_reason, handle_grant, alias_status, forwarding_email, created_at, is_paid, payment_method, is_early_believer, alias_sync_status, alias_sync_attempts, alias_synced_at, alias_sync_error, subdomain_alias, last_country, last_city";
 
 type ProfileRow = Record<string, unknown>;
 
@@ -67,6 +68,7 @@ function mapProfile(row: ProfileRow, email: string | null): ModeratedUser {
     status: (row["status"] as string | null) ?? "active",
     isSuspended: Boolean(row["is_suspended"]),
     isBanned: Boolean(row["is_banned"]),
+    isShadowbanned: Boolean(row["is_shadowbanned"]),
     moderationReason: (row["moderation_reason"] as string | null) ?? null,
     handleGrant: (row["handle_grant"] as string | null) ?? null,
     subdomainAlias: (row["subdomain_alias"] as string | null) ?? null,
@@ -131,6 +133,7 @@ export async function listUsersPage(opts: {
   page?: number;
   perPage?: number;
   segment?: UserSegment;
+  memberStatus?: "active" | "frozen" | "shadowbanned";
 }): Promise<Page<ModeratedUser>> {
   const { dbAdmin } = await import("@/lib/db/admin.server");
   const page = Math.max(1, opts.page ?? 1);
@@ -164,6 +167,16 @@ export async function listUsersPage(opts: {
         break;
       default:
         break;
+    }
+    // Status filter runs in SQL (not per page in the browser) so paging and totals stay correct.
+    // Mirrors memberStatus(): banned > suspended > frozen > shadowbanned > active.
+    if (opts.memberStatus) {
+      q = q.not("is_banned", "is", true).not("is_suspended", "is", true).not("status", "in", ["banned", "suspended"]);
+      if (opts.memberStatus === "frozen") q = q.eq("status", "frozen");
+      else {
+        q = q.or("status.is.null,status.neq.frozen");
+        q = opts.memberStatus === "shadowbanned" ? q.eq("is_shadowbanned", true) : q.not("is_shadowbanned", "is", true);
+      }
     }
     return q;
   };
@@ -208,7 +221,7 @@ export async function listUsersPage(opts: {
         error: unknown;
         count?: number | null;
       }>,
-    ["last_country", "last_city"],
+    ["last_country", "last_city", "is_shadowbanned"],
   ).then((r) => ({ data: r.data, count: (r as { count?: number | null }).count ?? null }));
 
   // Elke gebruiker heeft twee identiteiten: het geverifieerde rootprofiel en

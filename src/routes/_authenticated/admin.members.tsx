@@ -54,22 +54,18 @@ function MembersPage() {
 
   const load = useCallback(async () => {
     try {
-      setData(await listUsers({ data: { query: query || undefined, page, perPage: 25 } }));
+      setData(await listUsers({ data: { query: query || undefined, page, perPage: 25, memberStatus: filter === "all" ? undefined : filter } }));
       setError(false);
     } catch {
       setError(true);
     }
-  }, [query, page]);
+  }, [query, page, filter]);
   useEffect(() => {
     const t = setTimeout(() => void load(), 250);
     return () => clearTimeout(t);
   }, [load]);
 
-  const rows = (data?.rows ?? []).filter((r) => {
-    if (filter === "all") return true;
-    const s = memberStatus({ status: r.status, is_banned: r.isBanned, is_suspended: r.isSuspended, is_shadowbanned: (r as { isShadowbanned?: boolean }).isShadowbanned });
-    return s === filter;
-  });
+  const rows = data?.rows ?? [];
   const pages = data ? Math.max(1, Math.ceil(data.total / data.perPage)) : 1;
 
   return (
@@ -98,7 +94,7 @@ function MembersPage() {
                 <button
                   key={f}
                   type="button"
-                  onClick={() => setFilter(f)}
+                  onClick={() => { setFilter(f); setPage(1); }}
                   className={cn("rounded-md px-3 py-1 text-xs", filter === f ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
                 >
                   {f === "all" ? "Alle" : STATUS_LABEL[f]}
@@ -111,7 +107,7 @@ function MembersPage() {
             {!data && <p className="p-4 text-sm text-muted-foreground">Laden…</p>}
             {data && rows.length === 0 && <p className="p-4 text-sm text-muted-foreground">Geen leden gevonden.</p>}
             {rows.map((r) => {
-              const s = memberStatus({ status: r.status, is_banned: r.isBanned, is_suspended: r.isSuspended, is_shadowbanned: (r as { isShadowbanned?: boolean }).isShadowbanned });
+              const s = memberStatus({ status: r.status, is_banned: r.isBanned, is_suspended: r.isSuspended, is_shadowbanned: r.isShadowbanned });
               return (
                 <button key={r.userId} type="button" onClick={() => setOpenId(r.userId)} className="flex w-full items-center gap-3 p-3 text-left hover:bg-secondary/50">
                   <div className="min-w-0 flex-1">
