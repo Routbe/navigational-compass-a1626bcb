@@ -13,6 +13,8 @@
 ## Open (uit specificaties)
 - [x] Badges: wapenschilden (db/86), uploader/bewerken in /admin/custom-badges, interactieve pop-up op profiel
 - [ ] Snapchat Login Kit + Bitmoji-picker + handmatige status/mood-widget (geen Snap Map/GPS) (wacht op Snap Kit client ID/secret)
-- [ ] Admin-portaal split (APP_MODE, rout.dlp.li, noindex)
+- [x] Admin-portaal split (APP_MODE, rout.dlp.li, noindex) + harde build-split
+- [x] Leden 360° statusfilter server-side
+- [x] Sovereign Tip Jar (☕-knop + EPC-QR op profiel)
 - [ ] Testsuite account-merge / security-code / sms-provider / telegram
 - [x] Badge-uploads via Scaleway S3 (S3_* env vars) i.p.v. Vercel Blob
