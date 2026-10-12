@@ -2,14 +2,68 @@
   "source": "github",
   "repo": "https://github.com/Routbe/navigational-compass-07527403.git",
   "capabilities": [
-    { "capability": "application code (TanStack Start app, rout.be)", "source": "repo src/", "outcome": "migrate", "status": "in_progress", "next_action": "copy into project, install, build" },
-    { "capability": "database schema (Neon Postgres, 111 db/*.sql files)", "source": "repo db/", "outcome": "migrate", "status": "pending", "next_action": "apply via Lovable Neon connector gateway (scripts/migrate.ts) once connector keys exist" },
-    { "capability": "database records", "source": "none attached", "outcome": "pending", "status": "blocked", "next_action": "request CSV/JSON exports from Neon dashboard after preview" },
-    { "capability": "auth identities (Better Auth + passkeys)", "source": "none attached", "outcome": "pending", "status": "blocked", "next_action": "request user export (emails + original IDs) after preview" },
-    { "capability": "Stripe payments + webhook", "source": "repo (preserved)", "outcome": "preserve", "status": "pending", "next_action": "request Stripe keys via secret form before verification" },
-    { "capability": "Brevo transactional email", "source": "repo (preserved)", "outcome": "preserve", "status": "pending", "next_action": "request Brevo API key via secret form before verification" },
-    { "capability": "Infomaniak S3 storage", "source": "repo (preserved)", "outcome": "preserve", "status": "pending", "next_action": "request S3 credentials via secret form before verification" },
-    { "capability": "public endpoints/webhooks/cron (api_.public.*)", "source": "repo", "outcome": "preserve", "status": "in_progress", "next_action": "ported with code; external callers need URL cutover" },
-    { "capability": "secrets/env vars (ENVIRONMENT.md)", "source": ".env.example names only", "outcome": "pending", "status": "blocked", "next_action": "request values via Lovable secret form at verification time" }
+    {
+      "capability": "application code (TanStack Start app, rout.be)",
+      "source": "repo src/",
+      "outcome": "migrate",
+      "status": "done",
+      "next_action": ""
+    },
+    {
+      "capability": "database schema (Neon Postgres, 111 db/*.sql files)",
+      "source": "repo db/",
+      "outcome": "migrate",
+      "status": "pending",
+      "next_action": "apply via Lovable Neon connector gateway (scripts/migrate.ts) once connector keys exist"
+    },
+    {
+      "capability": "database records",
+      "source": "none attached",
+      "outcome": "pending",
+      "status": "blocked",
+      "next_action": "request CSV/JSON exports from Neon dashboard after preview"
+    },
+    {
+      "capability": "auth identities (Better Auth + passkeys)",
+      "source": "none attached",
+      "outcome": "pending",
+      "status": "blocked",
+      "next_action": "request user export (emails + original IDs) after preview"
+    },
+    {
+      "capability": "Stripe payments + webhook",
+      "source": "repo (preserved)",
+      "outcome": "preserve",
+      "status": "pending",
+      "next_action": "request Stripe keys via secret form before verification"
+    },
+    {
+      "capability": "Brevo transactional email",
+      "source": "repo (preserved)",
+      "outcome": "preserve",
+      "status": "pending",
+      "next_action": "request Brevo API key via secret form before verification"
+    },
+    {
+      "capability": "Infomaniak S3 storage",
+      "source": "repo (preserved)",
+      "outcome": "preserve",
+      "status": "pending",
+      "next_action": "request S3 credentials via secret form before verification"
+    },
+    {
+      "capability": "public endpoints/webhooks/cron (api_.public.*)",
+      "source": "repo",
+      "outcome": "preserve",
+      "status": "done",
+      "next_action": ""
+    },
+    {
+      "capability": "secrets/env vars (ENVIRONMENT.md)",
+      "source": ".env.example names only",
+      "outcome": "pending",
+      "status": "blocked",
+      "next_action": "request values via Lovable secret form at verification time"
+    }
   ]
 }
