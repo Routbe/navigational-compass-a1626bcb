@@ -13,7 +13,7 @@ import { BrandLoader } from "@/components/BrandLoader";
  */
 export default function AdminAppShell({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
-  const { isAdmin, checking } = useIsAdmin() as { isAdmin: boolean; checking: boolean };
+  const { isAdmin, checking } = useIsAdmin();
 
   if (user && (loading || checking)) {
     return (
