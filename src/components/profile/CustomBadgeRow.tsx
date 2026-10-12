@@ -20,8 +20,8 @@ function formatDate(iso: string | null) {
   return Number.isNaN(d.getTime()) ? null : d.toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
 }
 
-/** Eigen badges (wapenschild, embleem): additief naast vinkje of schild; klik opent details. */
-export function CustomBadgeRow({ handle, mutedColor }: { handle: string | null | undefined; mutedColor?: string }) {
+/** Digitaal paspoort: badges as stamps; a click opens the stamp with date, emblem and reason. */
+export function ProfilePassport({ handle, theme }: { handle: string | null | undefined; theme: { card: string; border: string; text: string; muted: string } }) {
   const load = useServerFn(getPublicCustomBadges);
   const [items, setItems] = useState<Item[]>([]);
   const [open, setOpen] = useState<Item | null>(null);
@@ -39,21 +39,29 @@ export function CustomBadgeRow({ handle, mutedColor }: { handle: string | null |
   const since = formatDate(open?.grantedAt ?? null);
   return (
     <>
-      <ul className="mt-2 flex flex-wrap items-center justify-center gap-1.5" aria-label="Eigen badges">
-        {items.map((b) => (
-          <li key={b.slug}>
-            <button
-              type="button"
-              onClick={() => setOpen(b)}
-              title={b.name}
-              aria-label={`${b.name} — details bekijken`}
-              className="rounded-md transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <BadgeEmblem badge={b} size={26} />
-            </button>
-          </li>
-        ))}
-      </ul>
+      <section aria-label="Digitaal paspoort" className={`mt-6 w-full rounded-2xl border p-4 ${theme.card} ${theme.border}`}>
+        <header className="mb-3 flex items-baseline justify-between">
+          <h2 className={`font-display text-sm uppercase tracking-[0.2em] ${theme.text}`}>Digitaal paspoort</h2>
+          <span className={`text-xs ${theme.muted}`}>{items.length} {items.length === 1 ? "stempel" : "stempels"}</span>
+        </header>
+        <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+          {items.map((b, i) => (
+            <li key={b.slug}>
+              <button
+                type="button"
+                onClick={() => setOpen(b)}
+                aria-label={`${b.name} — stempel bekijken`}
+                style={{ borderColor: b.accentColor ?? undefined, rotate: `${((i * 37) % 13) - 6}deg` }}
+                className="flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-full border-2 border-dashed border-primary/60 p-2 transition-transform hover:rotate-0 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <BadgeEmblem badge={b} size={40} />
+                <span className={`line-clamp-1 text-[10px] font-medium uppercase tracking-wide ${theme.text}`}>{b.name}</span>
+                {b.grantedAt && <span className={`text-[9px] ${theme.muted}`}>{new Date(b.grantedAt).toLocaleDateString("nl-BE", { month: "short", year: "numeric" })}</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
       <Dialog open={open !== null} onOpenChange={(v) => !v && setOpen(null)}>
         <DialogContent className="max-w-sm text-center">
           {open && (

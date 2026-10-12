@@ -53,7 +53,7 @@ import { BadgeShowcase } from "@/components/profile/BadgeShowcase";
 import { VerifiedInfoDialog } from "@/components/profile/VerifiedInfoDialog";
 import { monthYear } from "@/components/profile/VerifiedBadgePopover";
 import { ProfileBadge } from "@/components/profile/ProfileBadge";
-import { CustomBadgeRow } from "@/components/profile/CustomBadgeRow";
+import { ProfilePassport } from "@/components/profile/CustomBadgeRow";
 import type { BadgeType } from "@/lib/profile-display";
 import { EarlyBelieverBadge } from "@/components/profile/EarlyBelieverBadge";
 import {
@@ -412,11 +412,11 @@ export function ProfileView({
             />
           )}
         </h1>
-        {!free && <CustomBadgeRow handle={profile.username} mutedColor={t.muted} />}
         {profile.username && <SnapchatProfile handle={profile.username} theme={t} />}
         {profile.username && <NowPlaying handle={profile.username} theme={t} />}
         {profile.username && <ProfileIntegrations handle={profile.username} theme={t} />}
         {profile.username && <TipJarButton handle={profile.username} theme={t} />}
+        {!free && <ProfilePassport handle={profile.username} theme={t} />}
         {profile.username && <ProfileGuestbook handle={profile.username} theme={t} />}
 
         {earlyBeliever && (
