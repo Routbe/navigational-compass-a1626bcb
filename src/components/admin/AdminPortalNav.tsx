@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  Award, BadgeCheck, Gift, Globe, Inbox, LayoutDashboard, Landmark, Plug, Shield, Users, Webhook, Wrench,
+  Award, BadgeCheck, Gift, Globe, Inbox, KeyRound, LayoutDashboard, Landmark, Plug, Shield, UserSearch, Users, Webhook, Wrench,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,7 @@ const GROUPS = [
   {
     label: "Leden & identiteit",
     items: [
+      { to: "/admin/members", label: "Leden 360°", icon: UserSearch },
       { to: "/admin/verifications", label: "Verificaties & aanvragen", icon: BadgeCheck },
       { to: "/admin/team", label: "Mede-admins & rechten", icon: Users },
     ],
@@ -24,7 +25,10 @@ const GROUPS = [
   },
   {
     label: "Koppelingen",
-    items: [{ to: "/admin/integrations", label: "Schakelkast", icon: Plug }],
+    items: [
+      { to: "/admin/integrations", label: "Schakelkast", icon: Plug },
+      { to: "/admin/oauth-apps", label: "OAuth-apps", icon: KeyRound },
+    ],
   },
   {
     label: "Financieel",

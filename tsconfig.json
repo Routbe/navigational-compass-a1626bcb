@@ -5,8 +5,6 @@
   // that normally takes seconds run for minutes.
   "exclude": ["node_modules", "dist", "dist-ssr", ".wrangler", ".output", ".nitro", "supabase"],
   "compilerOptions": {
-    "incremental": true,
-    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
     "target": "ES2022",
     "jsx": "react-jsx",
     "module": "ESNext",

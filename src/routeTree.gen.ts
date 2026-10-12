@@ -76,6 +76,8 @@ import { Route as AuthenticatedAdminContactRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminCustomBadgesRouteImport } from './routes/_authenticated/admin.custom-badges'
 import { Route as AuthenticatedAdminGiftCardsRouteImport } from './routes/_authenticated/admin.gift-cards'
 import { Route as AuthenticatedAdminIntegrationsRouteImport } from './routes/_authenticated/admin.integrations'
+import { Route as AuthenticatedAdminMembersRouteImport } from './routes/_authenticated/admin.members'
+import { Route as AuthenticatedAdminOauthAppsRouteImport } from './routes/_authenticated/admin.oauth-apps'
 import { Route as AuthenticatedAdminOpsRouteImport } from './routes/_authenticated/admin.ops'
 import { Route as AuthenticatedAdminSepaRouteImport } from './routes/_authenticated/admin.sepa'
 import { Route as AuthenticatedAdminSubdomainsRouteImport } from './routes/_authenticated/admin.subdomains'
@@ -493,6 +495,18 @@ const AuthenticatedAdminIntegrationsRoute =
   AuthenticatedAdminIntegrationsRouteImport.update({
     id: '/integrations',
     path: '/integrations',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminMembersRoute =
+  AuthenticatedAdminMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminOauthAppsRoute =
+  AuthenticatedAdminOauthAppsRouteImport.update({
+    id: '/oauth-apps',
+    path: '/oauth-apps',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminOpsRoute = AuthenticatedAdminOpsRouteImport.update({
@@ -1002,6 +1016,8 @@ export interface FileRoutesByFullPath {
   '/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
   '/admin/gift-cards': typeof AuthenticatedAdminGiftCardsRoute
   '/admin/integrations': typeof AuthenticatedAdminIntegrationsRoute
+  '/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/admin/oauth-apps': typeof AuthenticatedAdminOauthAppsRoute
   '/admin/ops': typeof AuthenticatedAdminOpsRoute
   '/admin/sepa': typeof AuthenticatedAdminSepaRoute
   '/admin/subdomains': typeof AuthenticatedAdminSubdomainsRoute
@@ -1146,6 +1162,8 @@ export interface FileRoutesByTo {
   '/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
   '/admin/gift-cards': typeof AuthenticatedAdminGiftCardsRoute
   '/admin/integrations': typeof AuthenticatedAdminIntegrationsRoute
+  '/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/admin/oauth-apps': typeof AuthenticatedAdminOauthAppsRoute
   '/admin/ops': typeof AuthenticatedAdminOpsRoute
   '/admin/sepa': typeof AuthenticatedAdminSepaRoute
   '/admin/subdomains': typeof AuthenticatedAdminSubdomainsRoute
@@ -1293,6 +1311,8 @@ export interface FileRoutesById {
   '/_authenticated/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
   '/_authenticated/admin/gift-cards': typeof AuthenticatedAdminGiftCardsRoute
   '/_authenticated/admin/integrations': typeof AuthenticatedAdminIntegrationsRoute
+  '/_authenticated/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/_authenticated/admin/oauth-apps': typeof AuthenticatedAdminOauthAppsRoute
   '/_authenticated/admin/ops': typeof AuthenticatedAdminOpsRoute
   '/_authenticated/admin/sepa': typeof AuthenticatedAdminSepaRoute
   '/_authenticated/admin/subdomains': typeof AuthenticatedAdminSubdomainsRoute
@@ -1442,6 +1462,8 @@ export interface FileRouteTypes {
     | '/admin/custom-badges'
     | '/admin/gift-cards'
     | '/admin/integrations'
+    | '/admin/members'
+    | '/admin/oauth-apps'
     | '/admin/ops'
     | '/admin/sepa'
     | '/admin/subdomains'
@@ -1586,6 +1608,8 @@ export interface FileRouteTypes {
     | '/admin/custom-badges'
     | '/admin/gift-cards'
     | '/admin/integrations'
+    | '/admin/members'
+    | '/admin/oauth-apps'
     | '/admin/ops'
     | '/admin/sepa'
     | '/admin/subdomains'
@@ -1732,6 +1756,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/custom-badges'
     | '/_authenticated/admin/gift-cards'
     | '/_authenticated/admin/integrations'
+    | '/_authenticated/admin/members'
+    | '/_authenticated/admin/oauth-apps'
     | '/_authenticated/admin/ops'
     | '/_authenticated/admin/sepa'
     | '/_authenticated/admin/subdomains'
@@ -2382,6 +2408,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIntegrationsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/members': {
+      id: '/_authenticated/admin/members'
+      path: '/members'
+      fullPath: '/admin/members'
+      preLoaderRoute: typeof AuthenticatedAdminMembersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/oauth-apps': {
+      id: '/_authenticated/admin/oauth-apps'
+      path: '/oauth-apps'
+      fullPath: '/admin/oauth-apps'
+      preLoaderRoute: typeof AuthenticatedAdminOauthAppsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/ops': {
       id: '/_authenticated/admin/ops'
       path: '/ops'
@@ -2959,6 +2999,8 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCustomBadgesRoute: typeof AuthenticatedAdminCustomBadgesRoute
   AuthenticatedAdminGiftCardsRoute: typeof AuthenticatedAdminGiftCardsRoute
   AuthenticatedAdminIntegrationsRoute: typeof AuthenticatedAdminIntegrationsRoute
+  AuthenticatedAdminMembersRoute: typeof AuthenticatedAdminMembersRoute
+  AuthenticatedAdminOauthAppsRoute: typeof AuthenticatedAdminOauthAppsRoute
   AuthenticatedAdminOpsRoute: typeof AuthenticatedAdminOpsRoute
   AuthenticatedAdminSepaRoute: typeof AuthenticatedAdminSepaRoute
   AuthenticatedAdminSubdomainsRoute: typeof AuthenticatedAdminSubdomainsRoute
@@ -2973,6 +3015,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCustomBadgesRoute: AuthenticatedAdminCustomBadgesRoute,
   AuthenticatedAdminGiftCardsRoute: AuthenticatedAdminGiftCardsRoute,
   AuthenticatedAdminIntegrationsRoute: AuthenticatedAdminIntegrationsRoute,
+  AuthenticatedAdminMembersRoute: AuthenticatedAdminMembersRoute,
+  AuthenticatedAdminOauthAppsRoute: AuthenticatedAdminOauthAppsRoute,
   AuthenticatedAdminOpsRoute: AuthenticatedAdminOpsRoute,
   AuthenticatedAdminSepaRoute: AuthenticatedAdminSepaRoute,
   AuthenticatedAdminSubdomainsRoute: AuthenticatedAdminSubdomainsRoute,
