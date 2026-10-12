@@ -2,6 +2,7 @@ import { NowPlaying, useNowPlaying } from "@/components/profile/NowPlaying";
 import { SnapchatProfile } from "@/components/profile/SnapchatProfile";
 import { ProfileIntegrations } from "@/components/profile/ProfileIntegrations";
 import { ProfileGuestbook } from "@/components/profile/ProfileGuestbook";
+import { TipJarButton } from "@/components/profile/TipJarButton";
 import { useWireframeMode, WireframeOverlay } from "@/components/profile/WireframeMode";
 import { cn } from "@/lib/utils";
 import {
@@ -415,6 +416,7 @@ export function ProfileView({
         {profile.username && <SnapchatProfile handle={profile.username} theme={t} />}
         {profile.username && <NowPlaying handle={profile.username} theme={t} />}
         {profile.username && <ProfileIntegrations handle={profile.username} theme={t} />}
+        {profile.username && <TipJarButton handle={profile.username} theme={t} />}
         {profile.username && <ProfileGuestbook handle={profile.username} theme={t} />}
 
         {earlyBeliever && (

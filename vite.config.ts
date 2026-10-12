@@ -6,6 +6,10 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { VitePWA } from "vite-plugin-pwa";
+import { buildMode, routeIgnorePattern } from "./src/lib/app-mode-routes";
+
+// Hard split: each Vercel project builds only its own routes (VITE_APP_MODE=public | admin).
+const ignoreRoutes = routeIgnorePattern(buildMode(process.env));
 
 // Op Vercel: zet NITRO_PRESET=vercel zodat de server als Vercel-functie gebouwd wordt.
 const nitroPreset = process.env["NITRO_PRESET"] || (process.env["VERCEL"] ? "vercel" : undefined);
@@ -16,6 +20,7 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    ...(ignoreRoutes ? { router: { routeFileIgnorePattern: ignoreRoutes } } : {}),
   },
   vite: {
     plugins: [
